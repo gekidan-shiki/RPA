@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"./js/app.js","dynamic":true}],"generated":{"html":"<!DOCTYPE html>\n<html>\n  <head>\n    <title>My React App</title>\n  </head>\n  <body>\n    <div id=\"list\"></div>\n    <script src=\"/dist/21f4d6dddaf2a5144da899b49a4c03c4.js\"></script>\n  </body>\n</html>"},"hash":"d666e4c7f647e57509da53bdc3515036"}
