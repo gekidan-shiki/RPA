@@ -9,7 +9,8 @@ class ToDoList extends React.Component {
 			<ToDo
 				key={todo.id}
 				{...todo}
-				toggleAll={this.props.toggleAll}
+				toggleStatus={this.props.toggleStatus}
+				destroy={this.props.destroy}
 			/>
 		);
 

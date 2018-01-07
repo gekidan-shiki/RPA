@@ -2,6 +2,7 @@ import React from "react"
 import {render} from "react-dom"
 import ToDoList from "./todolist.js"
 import Form from "./form.js"
+import { BrowserRouter, Route, Link } from "react-router-dom"
 
 class ToDoApp extends React.Component {
 
@@ -19,9 +20,10 @@ class ToDoApp extends React.Component {
 				done: false
 			},
 		]
+		const counter = 2;
 		this.state = {
 			todos: todos,
-			countToDo: todos.length + 1,
+			counter: counter,
 		}
 	}
 
@@ -29,27 +31,43 @@ class ToDoApp extends React.Component {
 		e.preventDefault();
 		const desc = e.target.desc.value;
 		const todos = this.state.todos.slice();
-		const countToDo = this.state.countToDo;
-
 		todos.push({
-			id: countToDo,
+			id: this.state.counter + 1,
 			desc: desc,
 			done: false,
 		});
 
-		this.setState({todos});
-		this.setState({countToDo: countToDo + 1});
-
+		this.setState({
+			todos: todos,
+			counter: this.state.counter + 1,
+		});
 		e.target.desc.value = '';
 	}
 
-	toggleAll(event) {
-		const checked = event.target.checked;
-		this.props.model.toggleAll(checked);
+	toggleStatus(e) {
+		const id = parseInt(e.currentTarget.getAttribute('data-id'));
+		const todos = this.state.todos.slice();
+		for(let i in todos) {
+			const todo = todos[i];
+			if(todo.id == id) {
+				todos[i] = Object.assign({}, todos[i], {
+					done: !todo.done,
+				});
+			}
+		}
+		this.setState(Object.assign({}, this.state, {todos: todos}));
 	}
 
-	toggle(todoToToggle) {
-		this.props.model.toggle(todoToToggle);
+	destroy(e) {
+		const id = parseInt(e.currentTarget.getAttribute('data-id'));
+		const todos = this.state.todos.slice();
+		for(let i in todos) {
+			const todo = todos[i];
+			if(todo.id == id) {
+				todos.splice(i, 1);
+			};
+		}
+		this.setState(Object.assign({}, this.state, {todos: todos}));
 	}
 
 	render() {
@@ -61,10 +79,12 @@ class ToDoApp extends React.Component {
 				</header>
 				<ToDoList 
 					todos={this.state.todos}
-					toggleAll={this.toggleAll.bind(this)}
+					toggleStatus={this.toggleStatus.bind(this)}
+					destroy={this.destroy.bind(this)}
 				/>
 			</div>
 		);
 	}
 }
 render(<ToDoApp />, document.getElementById("list"));
+
