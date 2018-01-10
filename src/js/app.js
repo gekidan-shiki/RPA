@@ -2,7 +2,15 @@ import React from "react"
 import {render} from "react-dom"
 import ToDoList from "./todolist.js"
 import Form from "./form.js"
+import ActiveList from "./activelist.js"
 import { BrowserRouter, Route, Link } from "react-router-dom"
+
+
+const All = () => (
+	<div>
+		<h2>ALL</h2>
+	</div>
+)
 
 class ToDoApp extends React.Component {
 
@@ -77,14 +85,36 @@ class ToDoApp extends React.Component {
 					<h1>ToDoList</h1>
 					<Form handleSubmit={this.handleSubmit.bind(this)}/>
 				</header>
-				<ToDoList 
-					todos={this.state.todos}
-					toggleStatus={this.toggleStatus.bind(this)}
-					destroy={this.destroy.bind(this)}
+				<Route path='/all' 
+					render={props =>
+						<ToDoList 
+							todos={this.state.todos}
+							{...props}
+							toggleStatus={this.toggleStatus.bind(this)}
+							destroy={this.destroy.bind(this)}
+						/>
+					}
+				/>
+				<Route path="/active"
+					render={props =>
+						<ToDoList 
+							todos={this.state.todos.filter( function( value, index, array ) {
+								return value.done == false;
+								}
+							)}
+							{...props}
+							toggleStatus={this.toggleStatus.bind(this)}
+							destroy={this.destroy.bind(this)}	
+						/>
+					}
 				/>
 			</div>
 		);
 	}
 }
-render(<ToDoApp />, document.getElementById("list"));
+render((
+	<BrowserRouter>
+		<ToDoApp />
+	</BrowserRouter>
+), document.getElementById("list"));
 
