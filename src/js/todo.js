@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 class ToDo extends React.Component {
   render() {
     console.log(this.props.id, this.props.done);
-    const { id, toggleStatus, done, desc, destroy } = this.props;
+    const { id, toggleStatus, done, title, body, destroy } = this.props;
     return (
       <li>
         <span>{id}</span>
@@ -14,7 +14,8 @@ class ToDo extends React.Component {
           onClick={(e) => toggleStatus(e, id)}
           checked={done}
         />
-        <p>{desc}</p>
+        <p>{title}</p>
+        <p>{body}</p>
         <button
           onClick={(e) => destroy(e, id)}
         />
@@ -26,8 +27,9 @@ class ToDo extends React.Component {
 ToDo.propTypes = {
   id: PropTypes.number.isRequired,
   toggleStatus: PropTypes.func.isRequired,
-  done: PropTypes.bool.isRequired,
-  desc: PropTypes.string.isRequired,
+  done: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
   destroy: PropTypes.func.isRequired,
 }
 
