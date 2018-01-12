@@ -1,5 +1,6 @@
 import React from "react"
 import {render} from "react-dom"
+import PropTypes from "prop-types"
 
 class Form extends React.Component {
   render() {
@@ -19,6 +20,12 @@ class Form extends React.Component {
       </div>
     );
   }
+}
+
+Form.propTypes = {
+  value: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 }
 
 export default Form

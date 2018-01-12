@@ -12,9 +12,6 @@ class App extends React.Component {
     counter: 0,
     value: '',
   }
-  constructor() {
-    super();
-  }
 
   handleChange(e) {
     this.setState({
@@ -40,7 +37,7 @@ class App extends React.Component {
       return {
         ...state,
         todos: state.todos.map( (todo) => {
-          if(todo.id == id) {
+          if(todo.id === id) {
             return {
               ...todo, 
               done: !todo.done
@@ -88,11 +85,9 @@ class App extends React.Component {
         <Route path="/active"
           render={props =>
             <ToDoList 
-              todos={this.state.todos.filter( function(todo) {
+              todos={this.state.todos.filter( (todo) => {
                 return todo.done == false;
-                }
-              )}
-              {...props}
+              })}
               toggleStatus={this.toggleStatus.bind(this)}
               destroy={this.destroy.bind(this)}	
             />

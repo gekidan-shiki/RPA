@@ -1,5 +1,6 @@
 import React from "react"
 import {render} from "react-dom"
+import PropTypes from "prop-types"
 
 class ToDo extends React.Component {
   render() {
@@ -16,11 +17,18 @@ class ToDo extends React.Component {
         <p>{desc}</p>
         <button
           onClick={(e) => destroy(e, id)}
-          data-id={id}
         />
       </li>
     );
   }
+}
+
+ToDo.propTypes = {
+  id: PropTypes.number.isRequired,
+  toggleStatus: PropTypes.func.isRequired,
+  done: PropTypes.bool.isRequired,
+  desc: PropTypes.string.isRequired,
+  destroy: PropTypes.func.isRequired,
 }
 
 export default ToDo
