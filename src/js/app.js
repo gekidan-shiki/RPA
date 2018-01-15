@@ -11,7 +11,7 @@ class App extends React.Component {
     counter: 0,
     value: '',
     titleValue: '',
-    user_id: 0,
+    user_id: 1,
   }
 
   handleChange(e) {
@@ -27,16 +27,36 @@ class App extends React.Component {
   }
 
   handleSubmit(e) {
+    var mydata = {
+      "user_id": 1,
+      "title": this.state.titleValue,
+      "body": this.state.value,
+      "status": 0,
+    }
     e.preventDefault();
     this.setState((state) => {
       return {
         ...state,
-        todos: [...state.todos, { id: state.counter + 1, title: state.titleValue, body: state.value, done: 0 }],
+        todos: [...state.todos, { id: state.counter + 1, title: state.titleValue, body: state.value, status: 0 }],
         counter: state.counter + 1,
         value: '',
         titleValue: '',
       }
     });
+//    this.postToDo(mydata);
+  }
+
+  postToDo(data) {
+    fetch('http://192.168.100.69:3000/api/v1/users/1/todos',{
+      method: 'post',
+      mode:'no-cors',
+      headers: {
+        'content-type': 'todos/json'
+      },
+      body: JSON.stringify(data)
+    }).then((response) => {
+      return response.json();
+    })
   }
 
   toggleStatus(e, id) {
@@ -45,15 +65,15 @@ class App extends React.Component {
         ...state,
         todos: state.todos.map( (todo) => {
           if(todo.id === id) {
-            if(todo.done === 0) {
+            if(todo.status === 0) {
               return {
                 ...todo,
-                done: 1
+                status: 1
               }
-            } else if(todo.done === 1) {
+            } else if(todo.status === 1) {
               return {
                 ...todo,
-                done: 0
+                status: 0
               }
             } 
           } else {
@@ -88,6 +108,7 @@ class App extends React.Component {
             handleSubmit={this.handleSubmit.bind(this)}
             handleChange={this.handleChange.bind(this)}
             handleTitleChange={this.handleTitleChange.bind(this)}
+            postToDo={this.postToDo.bind(this)}
           />
        </header>
         <Route exact path='/'
@@ -109,7 +130,7 @@ class App extends React.Component {
           render={props =>
             <ToDoList 
               todos={this.state.todos.filter( (todo) => {
-                return todo.done == false;
+                return todo.status == false;
               })}
               toggleStatus={this.toggleStatus.bind(this)}
               destroy={this.destroy.bind(this)}	
